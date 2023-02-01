@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    app:cardCornerRadius="15dp"
+    android:outlineSpotShadowColor="@color/white"
+    android:backgroundTint="#FFFFFF"
+    android:layout_height="120dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <ImageView
+            android:id="@+id/product_img"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            />
+        <TextView
+            android:id="@+id/product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/product_img"
+            android:textSize="20dp"
+            android:text="Name"
+            />
+        <TextView
+            android:id="@+id/product_desc"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_toRightOf="@id/product_img"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Description"
+            android:layout_below="@id/product_name"
+            />
+
+        <TextView
+            android:id="@+id/pricetag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/product_img"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="₹"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            />
+        <TextView
+            android:id="@+id/product_price"
+            android:layout_toRightOf="@id/pricetag"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="80"
+            android:layout_height="wrap_content"
+            />
+
+        <ImageView
+            android:id="@+id/favourite"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="10dp"
+            android:padding="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/heart" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
