@@ -30,6 +30,7 @@ class SettingsActivity : AppCompatActivity() {
 
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         var i = Intent(this,MainActivity::class.java)
         i.putExtra("page","setting")

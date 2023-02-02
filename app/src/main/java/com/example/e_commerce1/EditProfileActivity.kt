@@ -24,7 +24,7 @@ import com.example.e_commerce1.databinding.ActivityEditProfileBinding
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
-import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest
+import net.gotev.uploadservice.MultipartUploadRequest
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback

@@ -122,6 +122,10 @@ class MainActivity : AppCompatActivity() {
         {
             replaceFragment(FavouriteFragment(),R.drawable.heartselected,"favourite")
         }
+        else if (i.getStringExtra("page")=="setting")
+        {
+            replaceFragment(ProfileFragment(),R.drawable.userselected,"setting")
+        }
 
 
         binding.home.setOnClickListener {

@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerce1.databinding.FragmentHomeBinding
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 import com.smarteist.autoimageslider.SliderAnimations
@@ -38,6 +40,9 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding!!.root
 
+        var manager : RecyclerView.LayoutManager = LinearLayoutManager(requireActivity())
+        binding!!.listItem.layoutManager=manager
+
 
         sharedPreferences = requireContext().getSharedPreferences("User_Session",Context.MODE_PRIVATE)
 
@@ -53,7 +58,7 @@ class HomeFragment : Fragment() {
                 if (context != null) {
                     list = response.body() as MutableList<Model>
 
-                    var adapter = ListAdapter(requireActivity(), list.take(5) as MutableList<Model>)
+                    var adapter = RecyclerListAdapter(requireActivity(), list.take(5) as MutableList<Model>)
                     binding!!.listItem.adapter = adapter
                 }
             }
@@ -63,13 +68,7 @@ class HomeFragment : Fragment() {
             }
         })
 
-        binding!!.listItem.setOnItemClickListener { adapterView, view, i, l ->
-            var a = adapterView.getItemAtPosition(i).toString().toInt()
 
-            var i = Intent(requireActivity(),ProductViewActivity::class.java)
-            i.putExtra("pid",list[a].pid)
-            startActivity(i)
-        }
 
         var name = sharedPreferences.getString("name","")
 

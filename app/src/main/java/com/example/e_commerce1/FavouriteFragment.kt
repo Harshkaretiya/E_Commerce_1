@@ -1,5 +1,6 @@
 package com.example.e_commerce1
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -8,8 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerce1.databinding.FragmentFavouriteBinding
-import com.example.e_commerce1.databinding.FragmentHomeBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,6 +36,9 @@ class FavouriteFragment : Fragment() {
         binding!!.emptyText.visibility = View.GONE
         binding!!.progressBar.visibility = View.VISIBLE
 
+        var manager : RecyclerView.LayoutManager = LinearLayoutManager(requireActivity())
+        binding!!.favouriteList.layoutManager=manager
+
 
         sharedPreferences = requireContext().getSharedPreferences("User_Session", Context.MODE_PRIVATE)
         
@@ -43,6 +48,7 @@ class FavouriteFragment : Fragment() {
         var call: Call<List<Model>> = apiInterface.getidfav(uid)
         call.enqueue(object: Callback<List<Model>>
         {
+            @SuppressLint("SuspiciousIndentation")
             override fun onResponse(call: Call<List<Model>>, response: Response<List<Model>>) {
 
 
@@ -54,7 +60,7 @@ class FavouriteFragment : Fragment() {
                 if (context != null) {
                     list = response.body() as MutableList<Model>
                     binding!!.progressBar.visibility = View.GONE
-                    var adapter = ListAdapter(requireActivity(), list)
+                    var adapter = RecyclerListAdapter(requireActivity(), list)
                     binding!!.favouriteList.adapter = adapter
                 }
             }

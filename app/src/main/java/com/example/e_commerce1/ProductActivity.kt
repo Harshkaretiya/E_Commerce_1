@@ -4,8 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerce1.databinding.ActivityProductBinding
-import com.example.e_commerce1.databinding.ActivityProductViewBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,6 +23,8 @@ class ProductActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         list = ArrayList()
+        var manager : RecyclerView.LayoutManager = LinearLayoutManager(this)
+        binding!!.productList.layoutManager=manager
 
         apiInterface = ApiClient.getapiclient().create(ApiInterface::class.java)
         var call: Call<List<Model>> = apiInterface.getdata()
@@ -32,7 +35,7 @@ class ProductActivity : AppCompatActivity() {
                 if (this != null) {
                     list = response.body() as MutableList<Model>
 
-                    var adapter = ListAdapter(this@ProductActivity, list)
+                    var adapter = RecyclerListAdapter(this@ProductActivity, list)
                     binding!!.productList.adapter = adapter
                 }
             }
@@ -42,12 +45,5 @@ class ProductActivity : AppCompatActivity() {
             }
         })
 
-        binding!!.productList.setOnItemClickListener { adapterView, view, i, l ->
-            var a = adapterView.getItemAtPosition(i).toString().toInt()
-
-            var i = Intent(this,ProductViewActivity::class.java)
-            i.putExtra("pid",list[a].pid)
-            startActivity(i)
-        }
     }
 }

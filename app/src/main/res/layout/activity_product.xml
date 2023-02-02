@@ -40,13 +40,12 @@
             android:textColor="#6DC51C"
             />
     </RelativeLayout>
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/productList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="20dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="10.0sp"
+        android:nestedScrollingEnabled="false"
         android:scrollbars="none"
         />
 </LinearLayout>
