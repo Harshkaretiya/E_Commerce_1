@@ -1,5 +1,6 @@
 package com.example.e_commerce1
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -59,6 +60,7 @@ class RecyclerListAdapter(var context: Context,var list: MutableList<Model>) : R
                         i.putExtra("page","favourite")
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         context.startActivity(i)
+                        (context as Activity).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
 //                        notifyItemRangeChanged(0,list.size)
 //                        notifyItemRangeRemoved(0,list.size)
                     }
