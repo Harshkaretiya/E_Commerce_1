@@ -67,7 +67,7 @@ class EditProfileActivity : AppCompatActivity() {
         binding.editEmail.setText(email)
         binding.editPhoneNumber.setText("${sharedPreferences.getString("number","")}")
 
-        val id = sharedPreferences.getInt("id",101)
+        val id = sharedPreferences.getInt("uid",101)
 
         //using apiInterference to get image using shared preference id and also using retro fit
 
@@ -147,7 +147,7 @@ class EditProfileActivity : AppCompatActivity() {
             if(filepath !=null){
                 val path = getPath(filepath)
                 val multipartUploadRequest = MultipartUploadRequest(this, "https://hk123234345.000webhostapp.com/ProjectTest/upload.php")
-                    .addParameter("id",id.toString())
+                    .addParameter("uid",id.toString())
                     .addParameter("name", name)
                     .addParameter("email",email)
                     .addParameter("number",number)
@@ -159,7 +159,7 @@ class EditProfileActivity : AppCompatActivity() {
                 //if no the this code will be run
             else{
                 val multipartUploadRequest = MultipartUploadRequest(this, "https://hk123234345.000webhostapp.com/ProjectTest/upload.php")
-                    .addParameter("id",id.toString())
+                    .addParameter("uid",id.toString())
                     .addParameter("name", name)
                     .addParameter("email",email)
                     .addParameter("number",number)
