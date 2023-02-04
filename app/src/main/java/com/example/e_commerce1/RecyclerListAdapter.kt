@@ -1,5 +1,6 @@
 package com.example.e_commerce1
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -16,7 +17,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RecyclerListAdapter(var context: Context,var list: MutableList<Model>) : RecyclerView.Adapter<MyView>()
+class RecyclerListAdapter(var context: Context,var list: MutableList<Model>,var page : String = "default") : RecyclerView.Adapter<MyView>()
 {
     private lateinit var apiInterface: ApiInterface
     lateinit var sharedPreferences: SharedPreferences
@@ -30,7 +31,7 @@ class RecyclerListAdapter(var context: Context,var list: MutableList<Model>) : R
         return list.size
     }
 
-    override fun onBindViewHolder(holder: MyView, position: Int) {
+    override fun onBindViewHolder(holder: MyView, @SuppressLint("RecyclerView") position: Int) {
 
         sharedPreferences = context.getSharedPreferences("User_Session",Context.MODE_PRIVATE)
         val uid = sharedPreferences.getInt("uid",101)
@@ -41,7 +42,7 @@ class RecyclerListAdapter(var context: Context,var list: MutableList<Model>) : R
         var call: Call<Model> = apiInterface.getcheckfav(list[position].pid,uid)
         call.enqueue(object : Callback<Model> {
             override fun onResponse(call: Call<Model>, response: Response<Model>) {
-                    holder.favourite.setImageResource(R.drawable.heartselected)
+                    holder.favourite.setImageResource(R.drawable.heartfilled)
                     isFavourite = true
             }
             override fun onFailure(call: Call<Model>, t: Throwable) {
@@ -56,13 +57,10 @@ class RecyclerListAdapter(var context: Context,var list: MutableList<Model>) : R
                         Toast.makeText(context,"Deleted",Toast.LENGTH_LONG).show()
                         isFavourite = false
                         holder.favourite.setImageResource(R.drawable.heart)
-                        var i = Intent(context,MainActivity::class.java)
-                        i.putExtra("page","favourite")
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        context.startActivity(i)
-                        (context as Activity).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-//                        notifyItemRangeChanged(0,list.size)
-//                        notifyItemRangeRemoved(0,list.size)
+                        if (page == "favourite") {
+                            list.removeAt(position)
+                            notifyDataSetChanged()
+                        }
                     }
                     override fun onFailure(call: Call<Void?>, t: Throwable) {
                         Toast.makeText(context,"Error",Toast.LENGTH_LONG).show()
@@ -73,7 +71,7 @@ class RecyclerListAdapter(var context: Context,var list: MutableList<Model>) : R
                 val call: Call<Void> = apiInterface.insertfav(list[position].pid, uid)
                 call.enqueue(object : Callback<Void> {
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                        holder.favourite.setImageResource(R.drawable.heartselected)
+                        holder.favourite.setImageResource(R.drawable.heartfilled)
                         isFavourite = true
                     }
                     override fun onFailure(call: Call<Void>, t: Throwable) {
@@ -95,6 +93,7 @@ class RecyclerListAdapter(var context: Context,var list: MutableList<Model>) : R
         holder.price.setText(list[position].price)
         holder.descrition.setText(list[position].desc)
     }
+
 }
 class MyView(itemView: View) : RecyclerView.ViewHolder(itemView)
 {

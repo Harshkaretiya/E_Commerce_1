@@ -68,6 +68,7 @@
                         android:layout_height="match_parent"
                         />
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/favouriteLayout"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_alignParentRight="true"
@@ -77,6 +78,7 @@
                         android:backgroundTint="#F5F5F7"
                         >
                         <ImageView
+                            android:id="@+id/favourite"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:layout_gravity="center"

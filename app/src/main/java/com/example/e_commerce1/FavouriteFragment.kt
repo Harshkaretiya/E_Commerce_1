@@ -27,7 +27,7 @@ class FavouriteFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentFavouriteBinding.inflate(inflater, container, false)
         val view = binding!!.root
@@ -36,7 +36,7 @@ class FavouriteFragment : Fragment() {
         binding!!.emptyText.visibility = View.GONE
         binding!!.progressBar.visibility = View.VISIBLE
 
-        var manager : RecyclerView.LayoutManager = LinearLayoutManager(requireActivity())
+        val manager : RecyclerView.LayoutManager = LinearLayoutManager(requireActivity())
         binding!!.favouriteList.layoutManager=manager
 
 
@@ -45,7 +45,7 @@ class FavouriteFragment : Fragment() {
         val uid = sharedPreferences.getInt("uid",101)
         
         apiInterface = ApiClient.getapiclient().create(ApiInterface::class.java)
-        var call: Call<List<Model>> = apiInterface.getidfav(uid)
+        val call: Call<List<Model>> = apiInterface.getidfav(uid)
         call.enqueue(object: Callback<List<Model>>
         {
             @SuppressLint("SuspiciousIndentation")
@@ -60,7 +60,7 @@ class FavouriteFragment : Fragment() {
                 if (context != null) {
                     list = response.body() as MutableList<Model>
                     binding!!.progressBar.visibility = View.GONE
-                    var adapter = RecyclerListAdapter(requireActivity(), list)
+                    val adapter = RecyclerListAdapter(requireActivity(), list,"favourite")
                     binding!!.favouriteList.adapter = adapter
                 }
             }

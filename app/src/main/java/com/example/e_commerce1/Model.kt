@@ -41,7 +41,7 @@ class Model
     @SerializedName("description")
     var desc = ""
 
-    @Expose
-    @SerializedName("uid")
-    var uid = 0
+//    @Expose
+//    @SerializedName("uid")
+//    var uid = 0
 }
