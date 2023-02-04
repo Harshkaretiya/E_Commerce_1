@@ -93,7 +93,6 @@ class RecyclerListAdapter(var context: Context,var list: MutableList<Model>,var 
         holder.price.setText(list[position].price)
         holder.descrition.setText(list[position].desc)
     }
-
 }
 class MyView(itemView: View) : RecyclerView.ViewHolder(itemView)
 {
