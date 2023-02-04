@@ -87,7 +87,6 @@ class RecyclerListAdapter(var context: Context,var list: MutableList<Model>,var 
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(i)
         }
-
         Picasso.get().load(list[position].image).placeholder(R.mipmap.ic_launcher).into(holder.product_img)
         holder.name.setText(list[position].name)
         holder.price.setText(list[position].price)
