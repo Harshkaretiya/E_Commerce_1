@@ -1,27 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".CartFragment">
-
+    tools:context=".CartFragment"
+    >
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:id="@+id/CartText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Cart"
-        android:gravity="center"
-        android:textSize="25sp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
         android:fontFamily="@font/poppins_bold"
         android:textColor="#6DC51C"
         />
-    <ListView
-        android:id="@+id/cart_list"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/cartList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_below="@id/CartText"
         android:layout_marginTop="10dp"
+        android:nestedScrollingEnabled="false"
+        android:scrollbars="none"
         />
-
-</LinearLayout>
+    <TextView
+        android:id="@+id/emptyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="List is Empty"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="#A8A8A8"
+        />
+</RelativeLayout>

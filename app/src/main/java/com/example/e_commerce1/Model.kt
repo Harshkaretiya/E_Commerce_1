@@ -41,6 +41,10 @@ class Model
     @SerializedName("description")
     var desc = ""
 
+    @Expose
+    @SerializedName("qty")
+    var qty = 0
+
 //    @Expose
 //    @SerializedName("uid")
 //    var uid = 0

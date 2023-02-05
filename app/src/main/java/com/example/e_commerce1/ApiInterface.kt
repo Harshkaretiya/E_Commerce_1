@@ -71,4 +71,37 @@ interface ApiInterface {
         @Query("pid") product_id:Int,
         @Query("uid") user_id:Int,
     ): Call<Void>
+
+    @FormUrlEncoded
+    @POST("cartinsert.php")
+    fun cartinsert(
+        @Field("pid") product_id:Int,
+        @Field("uid") user_id:Int,
+        @Field("qty") product_quantity:Int,
+    ): Call<Void>
+
+    @GET("cartdelete.php")
+    fun cartdelete(
+        @Query("pid") product_id:Int,
+        @Query("uid") user_id:Int,
+    ): Call<Void>
+
+    @GET("cartidview.php")
+    fun cartidview(
+        @Query("uid") user_id:Int,
+    ): Call<List<Model>>
+
+    @GET("cartcheck.php")
+    fun cartcheck(
+        @Query("pid") product_id:Int,
+        @Query("uid") user_id:Int,
+    ): Call<Model>
+
+    @FormUrlEncoded
+    @POST("cartupdate.php")
+    fun cartupdate(
+        @Field("uid") user_id:Int,
+        @Field("pid") product_id: Int,
+        @Field("qty") product_quantity: Int,
+    ): Call<Void>
 }

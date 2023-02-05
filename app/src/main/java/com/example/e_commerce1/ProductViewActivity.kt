@@ -33,6 +33,9 @@ class ProductViewActivity : AppCompatActivity() {
         binding = ActivityProductViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //--------------------------------------------------------------------------------//
+        //regular code
+
         var m = MainActivity()
         m.setStatusBarColor(this, Color.parseColor("#F5F5F5"))
 
@@ -49,8 +52,10 @@ class ProductViewActivity : AppCompatActivity() {
         val i = intent
         val pid = i.getIntExtra("pid",9999999)
 
-        val call: Call<Model> = apiInterface.getiddata(pid)
+        //---------------------------------------------------------------------------
+        //set data to product view page
 
+        val call: Call<Model> = apiInterface.getiddata(pid)
         call.enqueue(object : Callback<Model> {
             override fun onResponse(call: Call<Model>, response: Response<Model>) {
 
@@ -91,6 +96,11 @@ class ProductViewActivity : AppCompatActivity() {
             }
 
         })
+
+        //---------------------------------------------------------------------------
+        //check if product is favourite or not and if then set clickonevent
+
+
         var call2: Call<Model> = apiInterface.getcheckfav(pid,uid)
         call2.enqueue(object : Callback<Model> {
             override fun onResponse(call: Call<Model>, response: Response<Model>) {
@@ -129,6 +139,9 @@ class ProductViewActivity : AppCompatActivity() {
             }
         }
 
+        //------------------------------------------------------------------------------------------
+        //set grid view item
+
         var manager : RecyclerView.LayoutManager = GridLayoutManager(this,10)
         binding!!.gridItem.layoutManager=manager
 
@@ -140,8 +153,8 @@ class ProductViewActivity : AppCompatActivity() {
                 if (this != null) {
                     var list = response.body() as MutableList<Model>
 
-                    var adapter3 = RecyclerGridAdapter(this@ProductViewActivity, list)
-                    binding!!.gridItem.adapter = adapter3
+                    val adapter3 = RecyclerGridAdapter(this@ProductViewActivity, list)
+                    binding.gridItem.adapter = adapter3
                 }
             }
 
@@ -150,7 +163,27 @@ class ProductViewActivity : AppCompatActivity() {
             }
         })
 
+        //-------------------------------------------------------------------------------------
+        //insert product to cart
+
+        var qty = binding.quantitytext.text.toString().toInt()
+
+        binding.addToCart.setOnClickListener {
+            var call4 : Call<Void> = apiInterface.cartinsert(pid,uid,qty)
+            call4.enqueue(object : Callback<Void>{
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+
+                    Toast.makeText(applicationContext, "inserted", Toast.LENGTH_LONG).show()
+                }
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Toast.makeText(applicationContext,"Fail",Toast.LENGTH_LONG).show()
+                }
+            })
+        }
     }
+
+    //----------------------------------------------------------------------
+    //on back press function
 
     override fun onBackPressed() {
         var i = intent
@@ -169,6 +202,9 @@ class ProductViewActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
+
+    //-------------------------------------------------------------------------------------
+    //on back backpressed the list will be refreshed
     override fun onRestart() {
         super.onRestart()
 
