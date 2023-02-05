@@ -8,6 +8,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.ScrollView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,6 +52,14 @@ class ProductViewActivity : AppCompatActivity() {
 
         val i = intent
         val pid = i.getIntExtra("pid",9999999)
+        var scroll = i.getIntExtra("scroll",0)
+        if (scroll != null)
+        {
+            binding.productScroll.post { binding.productScroll.scrollTo(0,scroll) }
+        }
+
+        binding.GoToCart.visibility = View.GONE
+
 
         //---------------------------------------------------------------------------
         //set data to product view page
@@ -163,23 +172,143 @@ class ProductViewActivity : AppCompatActivity() {
             }
         })
 
+        var qty = 1
+
+
+        //-------------------------------------------------------------------------------------
+        //check if added to cart or not
+
+        binding.removeFromCart.visibility = View.GONE
+
+        var call5: Call<Model> = apiInterface.cartcheck(pid,uid)
+        call5.enqueue(object : Callback<Model> {
+            override fun onResponse(call: Call<Model>, response: Response<Model>) {
+                binding.removeFromCart.visibility = View.VISIBLE
+
+                qty = response.body()!!.qty.toString().toInt()
+                binding.quantityText.text = qty.toString()
+                binding.addToCart.visibility = View.GONE
+                binding.GoToCart.visibility = View.VISIBLE
+
+                //---------------------------------------------------------------------------------------
+                //increase or decrease if added to cart
+
+                binding.increase.setOnClickListener {
+                    if (qty<10) {
+                        qty++
+                        var call7: Call<Void> = apiInterface.cartupdate(pid, uid, qty)
+                        call7.enqueue(object : Callback<Void> {
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                binding.quantityText.text = qty.toString()
+                            }
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                Toast.makeText(
+                                    this@ProductViewActivity,
+                                    "Failed",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        })
+                    }
+                    else
+                        Toast.makeText(this@ProductViewActivity, "maximum reached", Toast.LENGTH_SHORT).show()
+                }
+                binding.decrease.setOnClickListener {
+                    if (qty>1) {
+                        qty--
+                        var call7: Call<Void> = apiInterface.cartupdate(pid,uid,qty)
+                        call7.enqueue(object :Callback<Void>{
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                binding.quantityText.text = qty.toString()
+                            }
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                Toast.makeText(this@ProductViewActivity, "Failed", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                    } else
+                        Toast.makeText(this@ProductViewActivity, "minimum reached", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<Model>, t: Throwable) {
+                
+                //update the number on display only not no database
+                
+                binding.increase.setOnClickListener {
+                    if (qty<10) {
+                        qty++
+                        binding.quantityText.text = qty.toString()
+                    }
+                    else
+                        Toast.makeText(this@ProductViewActivity, "maximum reached", Toast.LENGTH_SHORT).show()
+                }
+                binding.decrease.setOnClickListener {
+                    if (qty>1) {
+                        qty--
+                        binding.quantityText.text = qty.toString()
+                    }
+                    else
+                        Toast.makeText(this@ProductViewActivity, "minimum reached", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+
+        //---------------------------------------------------------------------------------------
+        //delete from cart when click on removeFomCart
+
+        binding.removeFromCart.setOnClickListener {
+            var call6: Call<Void> = apiInterface.cartdelete(pid,uid)
+            call6.enqueue(object:Callback<Void?>{
+                override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+                    binding.removeFromCart.visibility = View.GONE
+                    binding.quantityText.text = "1"
+                    onBackPressed()
+                }
+                override fun onFailure(call: Call<Void?>, t: Throwable) {
+                    Toast.makeText(this@ProductViewActivity,"Error",Toast.LENGTH_LONG).show()
+                }
+            })
+        }
+
+        
         //-------------------------------------------------------------------------------------
         //insert product to cart
-
-        var qty = binding.quantitytext.text.toString().toInt()
 
         binding.addToCart.setOnClickListener {
             var call4 : Call<Void> = apiInterface.cartinsert(pid,uid,qty)
             call4.enqueue(object : Callback<Void>{
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    Toast.makeText(applicationContext, "Added to cart", Toast.LENGTH_LONG).show()
+                    binding.removeFromCart.visibility = View.VISIBLE
+                    binding.addToCart.visibility = View.GONE
+                    binding.GoToCart.visibility = View.VISIBLE
 
-                    Toast.makeText(applicationContext, "inserted", Toast.LENGTH_LONG).show()
+                    var scrollView = binding.productScroll.scrollY
+
+                    var m = intent
+                    var currentpage = i.getStringExtra("cpage").toString()
+
+                    var l = Intent(this@ProductViewActivity,ProductViewActivity::class.java)
+                    l.putExtra("pid",pid)
+                    l.putExtra("scroll",scrollView)
+                    l.putExtra("cpage",currentpage)
+                    startActivity(l)
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                 }
                 override fun onFailure(call: Call<Void>, t: Throwable) {
                     Toast.makeText(applicationContext,"Fail",Toast.LENGTH_LONG).show()
                 }
             })
         }
+
+        //---------------------------------------------------------------------------------------
+        //after change of addToCart to GoToCart
+
+        binding.GoToCart.setOnClickListener {
+            var j = Intent(this,MainActivity::class.java)
+            j.putExtra("page","cart")
+            startActivity(j)
+        }
+
     }
 
     //----------------------------------------------------------------------
@@ -198,13 +327,19 @@ class ProductViewActivity : AppCompatActivity() {
             k.putExtra("page","home")
             startActivity(k)
         }
+        if (cpage == "cart") {
+            var k = Intent(this,MainActivity::class.java)
+            k.putExtra("page","cart")
+            startActivity(k)
+        }
+
         else {
             super.onBackPressed()
         }
     }
 
     //-------------------------------------------------------------------------------------
-    //on back backpressed the list will be refreshed
+    //on back back pressed the list will be refreshed
     override fun onRestart() {
         super.onRestart()
 

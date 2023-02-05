@@ -9,6 +9,7 @@
     android:background="#FFFFFF"
     tools:context=".ProductViewActivity">
     <ScrollView
+        android:id="@+id/productScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbarSize="0dp"
@@ -421,7 +422,7 @@
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="100dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 >
@@ -432,17 +433,17 @@
                     android:text="Quantity : "
                     android:fontFamily="@font/poppins_regular"
                     android:textSize="20sp"
-                    android:layout_centerVertical="true"
+                    android:layout_marginTop="10dp"
                     android:layout_marginLeft="20dp"
                     android:textColor="@color/black"
                     />
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="10dp"
                     android:background="#F5F5F7"
-                    android:layout_toRightOf="@id/quantityTag"
+                    android:layout_below="@id/quantityTag"
                     >
                     <TextView
                         android:id="@+id/decrease"
@@ -456,7 +457,7 @@
                         android:textColor="@color/black"
                         />
                     <TextView
-                        android:id="@+id/quantitytext"
+                        android:id="@+id/quantityText"
                         android:layout_width="30dp"
                         android:layout_height="wrap_content"
                         android:text="1"
@@ -476,41 +477,83 @@
                         android:fontFamily="@font/poppins_regular"
                         android:textSize="20sp"
                         android:gravity="center"
-                        android:layout_toRightOf="@id/quantitytext"
+                        android:layout_toRightOf="@id/quantityText"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
                         android:textColor="@color/black"
                         />
                 </RelativeLayout>
+                <TextView
+                    android:id="@+id/removeFromCart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Remove from cart"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/white"
+                    android:backgroundTint="#FF5353"
+                    android:layout_centerVertical="true"
+                    android:padding="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/round_all"
+                    />
             </RelativeLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:gravity="center"
                 >
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/addToCart"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_weight="1"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="10dp"
-                    app:cardCornerRadius="15dp"
-                    app:strokeWidth="1dp"
-                    app:strokeColor="#6DC51C"
-                    android:backgroundTint="@color/white"
-                    android:outlineSpotShadowColor="@color/white"
                     >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Add to Cart"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:textColor="#6DC51C"
-                        android:textSize="15sp"
-                        />
-                </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/addToCart"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        app:cardCornerRadius="15dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="#6DC51C"
+                        android:backgroundTint="@color/white"
+                        android:outlineSpotShadowColor="@color/white"
+                        >
+                        <TextView
+                            android:id="@+id/addToCartText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Add to Cart"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:textColor="#6DC51C"
+                            android:textSize="15sp"
+                            />
+                    </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/GoToCart"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        app:cardCornerRadius="15dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="#6DC51C"
+                        android:backgroundTint="@color/white"
+                        android:outlineSpotShadowColor="@color/white"
+                        >
+                        <TextView
+                            android:id="@+id/GoToCartText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Go to Cart"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:textColor="#6DC51C"
+                            android:textSize="15sp"
+                            />
+                    </com.google.android.material.card.MaterialCardView>
+
+                </RelativeLayout>
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="60dp"

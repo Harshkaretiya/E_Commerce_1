@@ -130,6 +130,11 @@ class MainActivity : AppCompatActivity() {
         {
             replaceFragment(HomeFragment(),R.drawable.homeselected,"home")
         }
+        else if (i.getStringExtra("page")=="cart")
+        {
+            replaceFragment(CartFragment(),R.drawable.shoppingcartgreen,"cart")
+        }
+
 
 
 

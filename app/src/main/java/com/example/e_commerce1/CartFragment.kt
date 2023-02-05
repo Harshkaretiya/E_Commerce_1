@@ -27,7 +27,7 @@ class CartFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentCartBinding.inflate(inflater, container, false)
         val view = binding!!.root
@@ -58,7 +58,7 @@ class CartFragment : Fragment() {
                 if (context != null) {
                     list = response.body() as MutableList<Model>
                     binding!!.progressBar.visibility = View.GONE
-                    val adapter = RecyclerListAdapter(requireActivity(), list)
+                    val adapter = RecyclerListAdapter(requireActivity(), list,"cart")
                     binding!!.cartList.adapter = adapter
                 }
             }

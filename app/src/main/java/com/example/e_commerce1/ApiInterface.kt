@@ -100,8 +100,8 @@ interface ApiInterface {
     @FormUrlEncoded
     @POST("cartupdate.php")
     fun cartupdate(
-        @Field("uid") user_id:Int,
         @Field("pid") product_id: Int,
+        @Field("uid") user_id:Int,
         @Field("qty") product_quantity: Int,
     ): Call<Void>
 }
