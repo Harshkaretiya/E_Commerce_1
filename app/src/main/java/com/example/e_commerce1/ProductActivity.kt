@@ -1,6 +1,5 @@
 package com.example.e_commerce1
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -35,7 +34,7 @@ class ProductActivity : AppCompatActivity() {
                 if (this != null) {
                     list = response.body() as MutableList<Model>
 
-                    var adapter = RecyclerListAdapter(this@ProductActivity, list)
+                    var adapter = RecyclerListAdapter(this@ProductActivity, list,"product")
                     binding!!.productList.adapter = adapter
                 }
             }
@@ -45,5 +44,30 @@ class ProductActivity : AppCompatActivity() {
             }
         })
 
+    }
+    override fun onRestart() {
+        super.onRestart()
+
+        // Get the current position of the RecyclerView
+        val currentPosition = (binding.productList.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+
+        // Refetch the data and refresh the list
+        val call = apiInterface.getdata()
+        call.enqueue(object : Callback<List<Model>> {
+            override fun onResponse(call: Call<List<Model>>, response: Response<List<Model>>) {
+                if (response.isSuccessful) {
+                    list = response.body() as MutableList<Model>
+                    val adapter = RecyclerListAdapter(this@ProductActivity, list, "product")
+                    binding.productList.adapter = adapter
+
+                    // Scroll to the previously saved position
+                    (binding.productList.layoutManager as LinearLayoutManager).scrollToPosition(currentPosition)
+                }
+            }
+
+            override fun onFailure(call: Call<List<Model>>, t: Throwable) {
+                Toast.makeText(this@ProductActivity, "No Internet", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 }

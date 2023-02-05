@@ -1,7 +1,6 @@
 package com.example.e_commerce1
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -11,29 +10,30 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RecyclerListAdapter(var context: Context,var list: MutableList<Model>,var page : String = "default") : RecyclerView.Adapter<MyView>()
+class RecyclerGridAdapter(var context: Context, var list: MutableList<Model>) : RecyclerView.Adapter<MyView2>()
 {
     private lateinit var apiInterface: ApiInterface
     lateinit var sharedPreferences: SharedPreferences
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyView {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyView2 {
         var data = LayoutInflater.from(context)
-        var view = data.inflate(R.layout.list_design,parent,false)
-        return MyView(view)
+        var view = data.inflate(R.layout.grid_design,parent,false)
+        return MyView2(view)
     }
 
     override fun getItemCount(): Int {
         return list.size
     }
 
-    override fun onBindViewHolder(holder: MyView, @SuppressLint("RecyclerView") position: Int) {
+    override fun onBindViewHolder(holder: MyView2, @SuppressLint("RecyclerView") position: Int) {
 
-        sharedPreferences = context.getSharedPreferences("User_Session",Context.MODE_PRIVATE)
+        sharedPreferences = context.getSharedPreferences("User_Session", Context.MODE_PRIVATE)
         val uid = sharedPreferences.getInt("uid",101)
 
         var isFavourite = false
@@ -42,28 +42,24 @@ class RecyclerListAdapter(var context: Context,var list: MutableList<Model>,var 
         var call: Call<Model> = apiInterface.getcheckfav(list[position].pid,uid)
         call.enqueue(object : Callback<Model> {
             override fun onResponse(call: Call<Model>, response: Response<Model>) {
-                    holder.favourite.setImageResource(R.drawable.heartfilled)
-                    isFavourite = true
+                holder.favourite.setImageResource(R.drawable.heartfilled)
+                isFavourite = true
             }
             override fun onFailure(call: Call<Model>, t: Throwable) {
             }
         })
 
-        holder.favourite.setOnClickListener {
+        holder.favouritelayout.setOnClickListener {
             if (isFavourite) {
                 var call: Call<Void> = apiInterface.getfavdelete(list[position].pid,uid)
-                call!!.enqueue(object:Callback<Void?>{
+                call!!.enqueue(object: Callback<Void?> {
                     override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
-                        Toast.makeText(context,"Deleted",Toast.LENGTH_LONG).show()
+                        Toast.makeText(context,"Deleted", Toast.LENGTH_LONG).show()
                         isFavourite = false
                         holder.favourite.setImageResource(R.drawable.heart)
-                        if (page == "favourite") {
-                            list.removeAt(position)
-                            notifyDataSetChanged()
-                        }
                     }
                     override fun onFailure(call: Call<Void?>, t: Throwable) {
-                        Toast.makeText(context,"Error",Toast.LENGTH_LONG).show()
+                        Toast.makeText(context,"Error", Toast.LENGTH_LONG).show()
                     }
                 })
             }
@@ -84,21 +80,19 @@ class RecyclerListAdapter(var context: Context,var list: MutableList<Model>,var 
         holder.itemView.setOnClickListener {
             var i = Intent(context,ProductViewActivity::class.java)
             i.putExtra("pid",list[position].pid)
-            i.putExtra("cpage",page)
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(i)
         }
         Picasso.get().load(list[position].image).placeholder(R.mipmap.ic_launcher).into(holder.product_img)
         holder.name.setText(list[position].name)
         holder.price.setText(list[position].price)
-        holder.descrition.setText(list[position].desc)
     }
 }
-class MyView(itemView: View) : RecyclerView.ViewHolder(itemView)
+class MyView2(itemView: View) : RecyclerView.ViewHolder(itemView)
 {
     var product_img : ImageView =itemView.findViewById(R.id.product_img)
     var name : TextView =itemView.findViewById(R.id.product_name)
     var price : TextView = itemView.findViewById(R.id.product_price)
-    var descrition : TextView = itemView.findViewById(R.id.product_desc)
     var favourite : ImageView = itemView.findViewById(R.id.favourite)
+    var favouritelayout : CardView = itemView.findViewById(R.id.favouriteLayout)
 }

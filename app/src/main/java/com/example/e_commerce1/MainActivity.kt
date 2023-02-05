@@ -126,6 +126,11 @@ class MainActivity : AppCompatActivity() {
         {
             replaceFragment(ProfileFragment(),R.drawable.userselected,"setting")
         }
+        else if (i.getStringExtra("page")=="home")
+        {
+            replaceFragment(HomeFragment(),R.drawable.homeselected,"home")
+        }
+
 
 
         binding.home.setOnClickListener {

@@ -539,7 +539,7 @@
                 >
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="30dp">
+                    android:layout_height="40dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -560,31 +560,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
                     android:scrollbars="none"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     >
-                    <FrameLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="match_parent"
-                        >
-                        <LinearLayout
-                            android:layout_width="710dp"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            >
-                            <GridView
+
+                            <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/grid_item"
-                                android:layout_width="fill_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="180dp"
-                                android:numColumns="100"
                                 android:paddingLeft="20dp"
-                                android:columnWidth="130dp"
                                 android:scrollbars="horizontal"
                                 android:stretchMode="none"
                                 android:scrollbarAlwaysDrawHorizontalTrack="true"
                                 android:scrollbarAlwaysDrawVerticalTrack="true"
-                                android:horizontalSpacing="10dp"
                                 />
-                        </LinearLayout>
-                    </FrameLayout>
                 </HorizontalScrollView>
             </LinearLayout>
         </LinearLayout>

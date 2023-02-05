@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="130dp"
     android:layout_height="180dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="20dp"
     android:outlineSpotShadowColor="@color/white"
-    android:backgroundTint="#FFFFFF"
+    app:strokeColor="#F5F5F7"
+    app:strokeWidth="1dp"
+    android:layout_marginHorizontal="3dp"
+    app:cardCornerRadius="20dp"
     >
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,7 +19,7 @@
             android:id="@+id/cardview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cardCornerRadius="20dp"
+            android:backgroundTint="@color/white"
             android:outlineSpotShadowColor="@color/white"
             >
             <RelativeLayout
@@ -67,6 +70,7 @@
                     android:textSize="12dp"
                     />
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/favouriteLayout"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
@@ -76,13 +80,14 @@
                     android:backgroundTint="#F5F5F7"
                     >
                     <ImageView
+                        android:id="@+id/favourite"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/heartselected"
+                        android:src="@drawable/heart"
                         />
                 </androidx.cardview.widget.CardView>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

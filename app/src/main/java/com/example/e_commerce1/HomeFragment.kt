@@ -58,7 +58,7 @@ class HomeFragment : Fragment() {
                 if (context != null) {
                     list = response.body() as MutableList<Model>
 
-                    var adapter = RecyclerListAdapter(requireActivity(), list.take(5) as MutableList<Model>)
+                    var adapter = RecyclerListAdapter(requireActivity(), list.take(5) as MutableList<Model>,"home")
                     binding!!.listItem.adapter = adapter
                 }
             }

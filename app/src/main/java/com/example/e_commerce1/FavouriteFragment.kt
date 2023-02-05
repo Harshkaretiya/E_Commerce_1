@@ -69,10 +69,6 @@ class FavouriteFragment : Fragment() {
                 Toast.makeText(requireActivity(),"No Internet", Toast.LENGTH_LONG).show()
             }
         })
-
-
-
-
         return view
     }
     override fun onDestroyView() {

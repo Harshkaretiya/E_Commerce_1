@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.e_commerce1.databinding.ActivityLoginBinding
 import com.example.e_commerce1.databinding.ActivityProductViewBinding
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
@@ -58,13 +61,6 @@ class ProductViewActivity : AppCompatActivity() {
                     binding.productDesc.text = response.body()!!.desc
                     binding.productWeight.text = response.body()!!.weight
 
-//                    var images = listOfNotNull(
-//                        response.body()?.image,
-//                        response.body()?.image2,
-//                        response.body()!!.image3,
-//                        response.body()!!.image4,
-//                        response.body()!!.image5
-//                        )
                     var img1 = response.body()!!.image
                     var img2 = response.body()!!.image2
                     var img3 = response.body()!!.image3
@@ -133,5 +129,69 @@ class ProductViewActivity : AppCompatActivity() {
             }
         }
 
+        var manager : RecyclerView.LayoutManager = GridLayoutManager(this,10)
+        binding!!.gridItem.layoutManager=manager
+
+        var call3: Call<List<Model>> = apiInterface.getdata()
+        call3.enqueue(object: Callback<List<Model>>
+        {
+            override fun onResponse(call: Call<List<Model>>, response: Response<List<Model>>) {
+
+                if (this != null) {
+                    var list = response.body() as MutableList<Model>
+
+                    var adapter3 = RecyclerGridAdapter(this@ProductViewActivity, list)
+                    binding!!.gridItem.adapter = adapter3
+                }
+            }
+
+            override fun onFailure(call: Call<List<Model>>, t: Throwable) {
+                Toast.makeText(this@ProductViewActivity,"No Internet", Toast.LENGTH_LONG).show()
+            }
+        })
+
+    }
+
+    override fun onBackPressed() {
+        var i = intent
+        var cpage = i.getStringExtra("cpage").toString()
+        if (cpage == "favourite") {
+            var k = Intent(this,MainActivity::class.java)
+            k.putExtra("page","favourite")
+            startActivity(k)
+        }
+        if (cpage == "home") {
+            var k = Intent(this,MainActivity::class.java)
+            k.putExtra("page","home")
+            startActivity(k)
+        }
+        else {
+            super.onBackPressed()
+        }
+    }
+    override fun onRestart() {
+        super.onRestart()
+
+        // Get the current position of the RecyclerView
+        val currentPosition = (binding.gridItem.layoutManager as GridLayoutManager).findFirstCompletelyVisibleItemPosition()
+
+        // Refetch the data and refresh the list
+        val call = apiInterface.getdata()
+        call.enqueue(object : Callback<List<Model>> {
+            override fun onResponse(call: Call<List<Model>>, response: Response<List<Model>>) {
+                if (response.isSuccessful) {
+                    var list = response.body() as MutableList<Model>
+                    val adapter = RecyclerGridAdapter(this@ProductViewActivity, list)
+                    binding.gridItem.adapter = adapter
+
+                    // Scroll to the previously saved position
+                    (binding.gridItem.layoutManager as GridLayoutManager).scrollToPosition(currentPosition)
+                }
+            }
+
+            override fun onFailure(call: Call<List<Model>>, t: Throwable) {
+                Toast.makeText(this@ProductViewActivity, "No Internet", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 }
